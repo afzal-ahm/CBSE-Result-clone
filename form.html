@@ -1,37 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Student Result Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBSE Board Result 2025</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+</svg> -->
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      margin: 0;
+      padding: 40px 0;
+    }
+
+    .form-container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 50px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    hr {
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      width: 45%;
+      font-size: 16px;
+      color: #222;
+      margin-top: 8px;
+    }
+
+    label small {
+      font-size: 13px;
+      color: #007bff;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 15px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .input-group {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      min-width: 100px;
+    }
+
+    #sub:hover {
+      background-color: #0056b3;
+    }
+
+    #rest:hover {
+      background-color: #B30808;
+    }
+
+    #rest {
+      background-color: #FF0808;
+    }
+
+    .btn-grp {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #captchaInput {
+      width: 100%;
+      max-width: 130px;
+    }
+
+    /* ✅ Square refresh button */
+    #refreshCaptcha {
+      background-color: #007bff;
+      width: 35px;
+      height: 35px;
+      border-radius: 6px;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    #refreshCaptcha i {
+      font-size: 18px;
+      color: white;
+    }
+
+    #refreshCaptcha:hover {
+      background-color: #0056b3;
+    }
+
+    /* ✅ Responsive adjustments */
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 25px 25px;
+      }
+
+      .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      label,
+      .input-group {
+        width: 100%;
+      }
+
+      button {
+        width: 45%;
+      }
+
+      #captchaInput {
+        max-width: 100%;
+      }
+
+      /* #refreshCaptcha {
+        width: 32px;
+        height: 32px;
+      } */
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 0;
+      }
+
+      .form-container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .btn-grp {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h2>Enter Details to View Result</h2>
 
-  <form id="resultForm">
-    <label>Roll Number:</label>
-    <input type="text" id="rollNumber" required><br><br>
+  <div class="form-container">
+    <h1 style="text-align: center; font-size: 30px;">CENTRAL BOARD OF SECONDARY EDUCATION</h1>
+    <h2>Secondary School Examination Results 2025</h2>
+    <hr>
 
-    <label>School Name:</label>
-    <select id="schoolName" required>
-      <option value="">-- Select School --</option>
-      <option>Sunrise Public School</option>
-      <option>St. Xavier’s School</option>
-      <option>Modern Delhi Public School</option>
-      <option>Green Valley High</option>
-      <option>Oxford International</option>
-    </select><br><br>
 
-    <label>Date of Birth:</label>
-    <input type="date" id="dob" required><br><br>
+    <form id="resultForm">
+      <!-- <label>Roll Number:</label> -->
+      <!-- <input type="text" id="rollNumber" required><br><br> -->
 
-    <label>Captcha:</label>
-    <span id="captcha"></span>
-    <input type="text" id="captchaInput" placeholder="Enter captcha" required>
-    <button type="button" id="refreshCaptcha">Reset Captcha</button><br><br>
+      <!-- ✅ ROLL NUMBER FIELD -->
+      <div class="form-group">
+        <label>Your Roll Number :</label>
+        <div class="input-group">
+          <input type="text" placeholder="Roll Number" required id="rollNumber" onblur="validateRollNumber()">
+          <span id="rollError" class="error-msg"></span>
+        </div>
+      </div>
 
-    <button type="submit">Submit</button>
-    <button type="reset">Reset</button>
-  </form>
+
+
+<!-- 
+      <label>School Name:</label>
+      <select id="schoolName" required>
+        <option value="">-- Select School --</option>
+        <option>Sunrise Public School</option>
+        <option>St. Xavier’s School</option>
+        <option>Modern Delhi Public School</option>
+        <option>Green Valley High</option>
+        <option>Oxford International</option>
+      </select><br><br> -->
+
+
+      <!-- ✅ SCHOOL NAME FIELD -->
+      <div class="form-group">
+        <label>Your School Number :</label>
+        <div class="input-group">
+          <select id="schoolName" required>
+            <option selected>Select Your School Name</option>
+            <option >Sunrise Public School</option>
+            <option>St. Xavier’s School</option>
+            <option>Modern Delhi Public School</option>
+            <option>Green Valley High</option>
+            <option>Oxford International</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- <label>Date of Birth:</label>
+      <input type="date" id="dob" required><br><br> -->
+
+       <!-- ✅ DOB FIELD -->
+      <div class="form-group">
+        <label>Date Of Birth <small>(DD/MM/YYYY)</small></label>
+        <div class="input-group">
+         <input type="date" id="dob" required>
+        </div>
+      </div>
+
+      <!-- <label>Captcha:</label>
+      <span id="captcha"></span>
+      <input type="text" id="captchaInput" placeholder="Enter captcha" required>
+      <button type="button" id="refreshCaptcha">Reset Captcha</button><br><br> -->
+
+        <!-- ✅ CAPTCHA FIELD -->
+      <div class="form-group">
+        <label>Enter Security Pin <small>(case sensitive)</small></label>
+        <div class="input-group">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="captchaInput" placeholder="Security Pin" required>
+            <span id="captcha"></span>
+            <button type="button" id="refreshCaptcha"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+</svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <button type="submit">Submit</button>
+      <button type="reset">Reset</button> -->
+
+       <!-- ✅ BUTTONS -->
+      <div class="btn-grp">
+        <button type="submit" id="sub">Submit</button>
+        <button type="reset" id="rest">Reset</button>
+      </div>
+    </form>
+
+  </div>
+
+<!-- ################# -->
 
   <script>
     // Captcha generation
@@ -47,6 +304,26 @@
     document.getElementById('refreshCaptcha').addEventListener('click', () => {
       currentCaptcha = generateCaptcha();
     });
+
+     // Validate Roll Number on Blur
+  function validateRollNumber() {
+    const rollInput = document.getElementById("rollNumber");
+    const errorMsg = document.getElementById("rollError");
+    const value = rollInput.value.trim();
+
+    if (value === "") {
+      errorMsg.textContent = "Roll Number cannot be empty.";
+      rollInput.style.borderColor = "red";
+    } 
+    else if (!/^[0-9]+$/.test(value)) {
+      errorMsg.textContent = "Only numbers are allowed!";
+      rollInput.style.borderColor = "red";
+    } 
+    else {
+      errorMsg.textContent = "";
+      rollInput.style.borderColor = "#007bff";
+    }
+  }
 
     document.getElementById('resultForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -65,4 +342,5 @@
     });
   </script>
 </body>
+
 </html>
