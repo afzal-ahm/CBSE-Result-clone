@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Result Form</title>
+</head>
+<body>
+  <h2>Enter Details to View Result</h2>
+
+  <form id="resultForm">
+    <label>Roll Number:</label>
+    <input type="text" id="rollNumber" required><br><br>
+
+    <label>School Name:</label>
+    <select id="schoolName" required>
+      <option value="">-- Select School --</option>
+      <option>Sunrise Public School</option>
+      <option>St. Xavier’s School</option>
+      <option>Modern Delhi Public School</option>
+      <option>Green Valley High</option>
+      <option>Oxford International</option>
+    </select><br><br>
+
+    <label>Date of Birth:</label>
+    <input type="date" id="dob" required><br><br>
+
+    <label>Captcha:</label>
+    <span id="captcha"></span>
+    <input type="text" id="captchaInput" placeholder="Enter captcha" required>
+    <button type="button" id="refreshCaptcha">Reset Captcha</button><br><br>
+
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+  </form>
+
+  <script>
+    // Captcha generation
+    function generateCaptcha() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let captcha = '';
+      for (let i = 0; i < 5; i++) captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+      document.getElementById('captcha').textContent = captcha;
+      return captcha;
+    }
+
+    let currentCaptcha = generateCaptcha();
+    document.getElementById('refreshCaptcha').addEventListener('click', () => {
+      currentCaptcha = generateCaptcha();
+    });
+
+    document.getElementById('resultForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userCaptcha = document.getElementById('captchaInput').value.trim();
+
+      if (userCaptcha !== currentCaptcha) {
+        alert('Captcha does not match!');
+        return;
+      }
+
+      const roll = document.getElementById('rollNumber').value.trim();
+      const school = document.getElementById('schoolName').value;
+      const dob = document.getElementById('dob').value;
+
+      window.location.href = `result.html?roll=${encodeURIComponent(roll)}&school=${encodeURIComponent(school)}&dob=${encodeURIComponent(dob)}`;
+    });
+  </script>
+</body>
+</html>

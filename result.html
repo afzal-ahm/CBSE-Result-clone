@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Result</title>
+</head>
+<body>
+  <h2>Student Result</h2>
+  <div id="result"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const roll = params.get('roll');
+    const school = params.get('school');
+    const dob = params.get('dob');
+
+    fetch(`/result?roll=${roll}&school=${encodeURIComponent(school)}&dob=${dob}`)
+      .then(res => res.json())
+      .then(data => {
+        const div = document.getElementById('result');
+
+        if (!data || !data.full_name) {
+          div.innerHTML = "<h3>No record found!</h3>";
+          return;
+        }
+
+        const choosingSubject = data.choosing_subject || "N/A";
+        const choosingMarks = data.choosing_subject_marks || "N/A";
+        const additionalSubject = data.additional_subject || "N/A";
+        const additionalMarks = data.additional_subject_marks || "N/A";
+
+        div.innerHTML = `
+          <p><strong>Roll Number:</strong> ${data.roll_number}</p>
+          <p><strong>Name:</strong> ${data.full_name}</p>
+          <p><strong>Father's Name:</strong> ${data.father_name}</p>
+          <p><strong>Mother's Name:</strong> ${data.mother_name}</p>
+          <p><strong>Date of Birth:</strong> ${data.dob}</p>
+          <p><strong>School Name:</strong> ${data.school_name}</p>
+          <h3>Marks</h3>
+          <p>English: ${data.english}</p>
+          <p>Hindi: ${data.hindi}</p>
+          <p>${choosingSubject}: ${choosingMarks}</p>
+          <p>Science: ${data.science}</p>
+          <p>Social Science: ${data.social_science}</p>
+          <p>${additionalSubject}: ${additionalMarks}</p>
+        `;
+      });
+  </script>
+</body>
+</html>
