@@ -1,63 +1,74 @@
-// server.js
 const http = require("http");
 const fs = require("fs");
-const path = require("path");
-const { MongoClient } = require("mongodb");
 const url = require("url");
+const { MongoClient } = require("mongodb");
 
 const uri = "mongodb://127.0.0.1:27017";
 const client = new MongoClient(uri);
+const dbName = "result";
+const collectionName = "student_result";
 
-let db;
-
-async function connectDB() {
+async function getStudentByRoll(roll) {
   await client.connect();
-  db = client.db("result"); // ✅ your actual DB name
-  console.log("✅ Connected to MongoDB (result)");
-}
-connectDB();
+  const db = client.db(dbName);
+  const students = db.collection(collectionName);
 
-function serveFile(res, filePath, contentType) {
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Not Found");
-    } else {
-      res.writeHead(200, { "Content-Type": contentType });
-      res.end(data);
-    }
-  });
+  const rollNum = parseInt(roll, 10); // ✅ convert to integer
+  console.log("🔹 Searching roll number:", rollNum);
+
+  const student = await students.findOne({ roll_number: rollNum });
+  console.log("🔹 Query result:", student);
+  return student;
 }
 
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
 
-  if (req.url === "/" || req.url === "/form.html") {
-    serveFile(res, path.join(__dirname, "form.html"), "text/html");
-  }
-  else if (req.url.startsWith("/result.html")) {
-    serveFile(res, path.join(__dirname, "result.html"), "text/html");
-  }
-  else if (parsedUrl.pathname === "/result") {
-    const { roll, dob, school } = parsedUrl.query;
+  if (parsedUrl.pathname === "/" || parsedUrl.pathname === "/form.html") {
+    fs.readFile("form.html", (err, data) => {
+      if (err) {
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        return res.end("Error loading form.html");
+      }
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
+    });
+  } else if (parsedUrl.pathname === "/result.html") {
+    fs.readFile("result.html", (err, data) => {
+      if (err) {
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        return res.end("Error loading result.html");
+      }
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
+    });
+  } else if (parsedUrl.pathname === "/result") {
+    const { roll } = parsedUrl.query;
 
-    console.log("🔍 Searching for:", { roll, dob, school });
+    if (!roll) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Roll number is required" }));
+    }
 
     try {
-      const student = await db.collection("student_result").findOne({
-        roll_number: parseInt(roll),
-        dob: dob,
-        school_name: school
-      });
+      const student = await getStudentByRoll(roll);
 
-      console.log("🎯 Query Result:", student);
+      if (!student) {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        return res.end(
+          JSON.stringify({
+            message:
+              "You have entered an incorrect Roll Number, Date of Birth, or School Name. Please check and try again.",
+          })
+        );
+      }
 
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(student || {}));
+      res.end(JSON.stringify(student));
     } catch (err) {
-      console.error("❌ Error fetching data:", err);
-      res.writeHead(500);
-      res.end("Server Error");
+      console.error("❌ Database error:", err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Internal Server Error" }));
     }
   } else {
     res.writeHead(404, { "Content-Type": "text/plain" });
@@ -65,6 +76,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(3000, () => {
-  console.log("🚀 Server running at http://localhost:3000");
-});
+server.listen(3000, () =>
+  console.log("✅ Server running at http://localhost:3000")
+);
