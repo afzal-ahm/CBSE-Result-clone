@@ -24,11 +24,11 @@ async function getStudentByRoll(roll) {
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
 
-  if (parsedUrl.pathname === "/" || parsedUrl.pathname === "/form.html") {
-    fs.readFile("form.html", (err, data) => {
+  if (parsedUrl.pathname === "/" || parsedUrl.pathname === "/index.html") {
+    fs.readFile("index.html", (err, data) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/plain" });
-        return res.end("Error loading form.html");
+        return res.end("Error loading index.html");
       }
       res.writeHead(200, { "Content-Type": "text/html" });
       res.end(data);
