@@ -138,13 +138,12 @@
         </header>
 
         <div class="details">
-            <div class="row"><span class="label">Roll No. :</span><span class="value" >511351351</span></div>
-            <div class="row"><span class="label">Candidate Name :</span><span class="value">Shawn Anderson</span></div>
-            <div class="row"><span class="label">Mother's Name :</span><span class="value">Dazzy Anderson</span></div>
-            <div class="row"><span class="label">Father's Name :</span><span class="value">Harry Potter</span></div>
-            <div class="row"><span class="label">Date Of Birth :</span><span class="value">25-10-2000</span></div>
-            <div class="row"><span class="label">School's Name :</span><span class="value">Blue Bells Public School,
-                    Jhansi</span></div>
+            <div class="row"><span class="label">Roll No. :</span><span class="value" id="roll_number" >000000</span></div>
+            <div class="row"><span class="label">Candidate Name :</span><span class="value" id="full_name">NA</span></div>
+            <div class="row"><span class="label">Mother's Name :</span><span class="value" id="mother_name">NA</span></div>
+            <div class="row"><span class="label">Father's Name :</span><span class="value" id="father_name">NA</span></div>
+            <div class="row"><span class="label">Date Of Birth :</span><span class="value" id="dob">NA</span></div>
+            <div class="row"><span class="label">School's Name :</span><span class="value" id="school_name">NA</span></div>
         </div>
 
         <div class="table">
@@ -159,42 +158,42 @@
 
                 <tr>
                     <td>English</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>A</td>
+                    <td><span id="eng">NA</span></td>
+                    <td><span id="engP">NA</span></td>
+                    <td><span id="engTotal">NA</span></td>
+                    <td><span id="engGrade">NA</span></td>
                 </tr>
 
                 <tr>
                     <td>Hindi</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>B</td>
+                    <td><span id="hin">NA</span></td>
+                    <td><span id="hinP">NA</span></td>
+                    <td><span id="hinTotal">NA</span></td>
+                    <td><span id="hinGrade">NA</span></td>
                 </tr>
 
                 <tr>
-                    <td>Mathematics</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>C</td>
+                    <td><span id="MatBioSubName">Mathematics</span></td>
+                    <td><span id="MatBio">NA</span></td>
+                    <td><span id="MatBioP">NA</span></td>
+                    <td><span id="MatBioTotal">NA</span></td>
+                    <td><span id="MatBioGrade">NA</span></td>
                 </tr>
 
                 <tr>
                     <td>Science</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>B</td>
+                    <td><span id="sci">NA</span></td>
+                    <td><span id="sciP">NA</span></td>
+                    <td><span id="sciTotal">NA</span></td>
+                    <td><span id="sciGrade">NA</span></td>
                 </tr>
 
                 <tr>
                     <td>Social Science</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>A</td>
+                    <td><span id="soc">NA</span></td>
+                    <td><span id="socP">NA</span></td>
+                    <td><span id="socTotal">NA</span></td>
+                    <td><span id="socGrade">NA</span></td>
                 </tr>
 
                 <tr class="additional">
@@ -202,16 +201,16 @@
                 </tr>
 
                 <tr>
-                    <td>Punjabi</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>A</td>
+                    <td><span id="PunUrdDraSubName">Punjabi</span></td>
+                    <td><span id="PunUrdDra">NA</span></td>
+                    <td><span id="PunUrdDraP">NA</span></td>
+                    <td><span id="PunUrdDraTotal">NA</span></td>
+                    <td><span id="PunUrdDraGrade">NA</span></td>
                 </tr>
 
                 <tr class="result">
                     <td></td>
-                    <td colspan="5">Result : Pass</td>
+                    <td colspan="5">Result : <span id="result">Pass</span></td>
                 </tr>
 
             </table>
@@ -225,7 +224,7 @@
     </div>
 
 
-    <div id="result"></div>
+    <!-- <div id="result"></div> -->
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -233,13 +232,16 @@
     const school = params.get('school');
     const dob = params.get('dob');
 
+
     fetch(`/result?roll=${roll}&school=${encodeURIComponent(school)}&dob=${dob}`)
       .then(res => res.json())
       .then(data => {
         const div = document.getElementById('result');
 
+       
+
         if (!data || !data.full_name) {
-          div.innerHTML = "<h3>No record found!</h3>";
+         alert("No record found!");
           return;
         }
 
@@ -248,22 +250,217 @@
         const additionalSubject = data.additional_subject || "N/A";
         const additionalMarks = data.additional_subject_marks || "N/A";
 
-        div.innerHTML = `
-          <p><strong>Roll Number:</strong> ${data.roll_number}</p>
-          <p><strong>Name:</strong> ${data.full_name}</p>
-          <p><strong>Father's Name:</strong> ${data.father_name}</p>
-          <p><strong>Mother's Name:</strong> ${data.mother_name}</p>
-          <p><strong>Date of Birth:</strong> ${data.dob}</p>
-          <p><strong>School Name:</strong> ${data.school_name}</p>
-          <h3>Marks</h3>
-          <p>English: ${data.english}</p>
-          <p>Hindi: ${data.hindi}</p>
-          <p>${choosingSubject}: ${choosingMarks}</p>
-          <p>Science: ${data.science}</p>
-          <p>Social Science: ${data.social_science}</p>
-          <p>${additionalSubject}: ${additionalMarks}</p>
-        `;
+        //inserting data
+        //basic details
+        roll_number = document.getElementById('roll_number');
+        roll_number.innerHTML = data.roll_number;
+
+        full_name = document.getElementById('full_name');
+        full_name.innerHTML = data.full_name;
+
+        mother_name = document.getElementById('mother_name');
+        mother_name.innerHTML = data.mother_name;
+
+        father_name = document.getElementById('father_name');
+        father_name.innerHTML = data.father_name;
+
+        dobdata = document.getElementById('dob');
+        dobdata.innerHTML = data.dob;
+
+        school_name = document.getElementById('school_name');
+        school_name.innerHTML = data.school_name;
+
+        //MARKS
+        eng = document.getElementById('eng');
+        eng.innerHTML = data.english;
+
+        engP = document.getElementById('engP');
+        engP.innerHTML = data.english_practical;
+
+        engTotal = document.getElementById('engTotal');
+        engTotal.innerHTML = data.english + data.english_practical;
+
+        hin = document.getElementById('hin');
+        hin.innerHTML = data.hindi;
+
+        hinP = document.getElementById('hinP');
+        hinP.innerHTML = data.hindi_practical;
+
+        hinTotal = document.getElementById('hinTotal');
+        hinTotal.innerHTML = data.hindi + data.hindi_practical;
+
+        MatBioSubName = document.getElementById('MatBioSubName');
+        MatBioSubName.innerHTML = choosingSubject;
+
+        MatBio = document.getElementById('MatBio');
+        MatBio.innerHTML = choosingMarks;
+
+        MatBioP = document.getElementById('MatBioP');
+        MatBioP.innerHTML = data.choosing_subject_practical;
+
+        MatBioP = document.getElementById('MatBioTotal');
+        MatBioP.innerHTML = choosingMarks + data.choosing_subject_practical;
+       
+        sci = document.getElementById('sci');
+        sci.innerHTML = data.science;
+
+        sciP = document.getElementById('sciP');
+        sciP.innerHTML = data.science_practical;
+
+        sciTotal = document.getElementById('sciTotal');
+        sciTotal.innerHTML = data.science + data.science_practical;
+
+        soc = document.getElementById('soc');
+        soc.innerHTML = data.social_science;
+
+        socP = document.getElementById('socP');
+        socP.innerHTML = data.social_science_practical;
+
+        socTotal = document.getElementById('socTotal');
+        socTotal.innerHTML = data.social_science + data.social_science_practical;
+
+        PunUrdDraSubName = document.getElementById('PunUrdDraSubName');
+        PunUrdDraSubName.innerHTML = additionalSubject;
+
+        PunUrdDra = document.getElementById('PunUrdDra');
+        PunUrdDra.innerHTML = additionalMarks;
+
+        PunUrdDraP = document.getElementById('PunUrdDraP');
+        PunUrdDraP.innerHTML = data.additional_subject_practical;
+
+        PunUrdDraTotal = document.getElementById('PunUrdDraTotal');
+        PunUrdDraTotal.innerHTML = additionalMarks + data.additional_subject_practical;
+
+        // GRADE AND RESULT LOGIC
+        let result = true;
+        totalNum = data.english + data.english_practical;
+        engGrade = document.getElementById('engGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            engGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            engGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            engGrade.innerHTML = 'C';
+        }else
+        {
+            engGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        totalNum = data.hindi + data.hindi_practical;
+        hinGrade = document.getElementById('hinGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            hinGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            hinGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            hinGrade.innerHTML = 'C';
+        }else
+        {
+            hinGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        totalNum = choosingMarks + data.choosing_subject_practical;
+        MatBioGrade = document.getElementById('MatBioGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            MatBioGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            MatBioGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            MatBioGrade.innerHTML = 'C';
+        }else
+        {
+            MatBioGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        totalNum = data.science + data.science_practical;
+        sciGrade = document.getElementById('sciGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            sciGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            sciGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            sciGrade.innerHTML = 'C';
+        }else
+        {
+            sciGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        totalNum = data.social_science + data.social_science_practical;
+        socGrade = document.getElementById('socGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            socGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            socGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            socGrade.innerHTML = 'C';
+        }else
+        {
+            socGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        totalNum = additionalMarks + data.additional_subject_practical;
+        PunUrdDraGrade = document.getElementById('PunUrdDraGrade');
+        if(totalNum >= 80 && totalNum <= 100)
+        {
+            PunUrdDraGrade.innerHTML = 'A';
+        }else if(totalNum >= 60 && totalNum < 80)
+        {
+            PunUrdDraGrade.innerHTML = 'B';
+        }else if(totalNum >= 45 && totalNum < 60)
+        {
+            PunUrdDraGrade.innerHTML = 'C';
+        }else
+        {
+            PunUrdDraGrade.innerHTML = 'F';
+            result = false;
+        }
+
+        if(result == false)
+        {
+            let res = document.getElementById('result');
+            res.innerHTML = 'Fail';
+
+        }
+
+
+        // div.innerHTML = `
+        //   <p><strong>Roll Number:</strong> ${data.roll_number}</p>
+        //   <p><strong>Name:</strong> ${data.full_name}</p>
+        //   <p><strong>Father's Name:</strong> ${data.father_name}</p>
+        //   <p><strong>Mother's Name:</strong> ${data.mother_name}</p>
+        //   <p><strong>Date of Birth:</strong> ${data.dob}</p>
+        //   <p><strong>School Name:</strong> ${data.school_name}</p>
+        //   <h3>Marks</h3>
+        //   <p>English: ${data.english}</p>
+        //   <p>Hindi: ${data.hindi}</p>
+        //   <p>${choosingSubject}: ${choosingMarks}</p>
+        //   <p>Science: ${data.science}</p>
+        //   <p>Social Science: ${data.social_science}</p>
+        //   <p>${additionalSubject}: ${additionalMarks}</p>
+        //   <p>${data.english_practical}</p>
+        // `;
       });
+      
   </script>
 
 
